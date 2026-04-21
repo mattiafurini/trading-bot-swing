@@ -1,0 +1,8 @@
+pandas>=2.0.0
+numpy>=1.24.0
+python-binance>=1.0.19
+pandas-ta>=0.3.14
+vectorbt>=0.25.0
+plotly>=5.15.0
+python-dotenv>=1.0.0
+jupyterlab>=4.0.0

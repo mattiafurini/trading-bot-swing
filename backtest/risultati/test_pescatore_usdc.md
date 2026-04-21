@@ -1,0 +1,5 @@
+# Risultati Il Pescatore su Anni Singoli (SOLUSDC)\n\nBacktest eseguito separando gli anni. Ogni anno il bot riparte con 1000$ e chiude forzatamente le posizioni a fine anno (Accounting Return).\n\n| Anno            | Descrizione                           |   Return_% |   Final_Capital |   Win_Rate_% |   Best_Trade_% |   Worst_Trade_% |   Total_Trades |
+|:----------------|:--------------------------------------|-----------:|----------------:|-------------:|---------------:|----------------:|---------------:|
+| Anno 2024       | EMA 50 Sconto | SL 3.5x | Smart Trail |     284.72 |         3847.18 |        92.86 |          42.3  |           -5.37 |             14 |
+| Anno 2025       | EMA 50 Sconto | SL 3.5x | Smart Trail |     -15.77 |          842.34 |        71.43 |          33.07 |          -35.78 |              7 |
+| Anno 2026 (YTD) | EMA 50 Sconto | SL 3.5x | Smart Trail |       0    |         1000    |         0    |           0    |            0    |              0 |
