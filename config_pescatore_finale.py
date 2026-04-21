@@ -4,15 +4,15 @@
 ╠══════════════════════════════════════════════════════════════════════╣
 ║                                                                    ║
 ║  Selezionata incrociando:                                          ║
-║    1. Grid Search su 405 combo (SOLUSDT 2021-2026)                 ║
-║    2. Stress-Test su SOLUSDC (2024-2026) con fee + slippage        ║
+║    1. Grid Search su 540 combo (Precisione a 1 Minuto)             ║
+║    2. Test Realistico su SOLUSDC (2024-2026) con fee + slippage    ║
 ║                                                                    ║
 ║  Criteri di scelta:                                                ║
-║    • Rank 4 su USDT (7178% return, 94.83% win rate, 58 trades)    ║
-║    • Rank 1 su USDC stress-test (746% return, 93.33% win rate)    ║
-║    • Consistenza anno per anno: +283% (2024), +100% (2025)        ║
-║    • Preferita alla Drop 3% per maggiore robustezza fuori         ║
-║      campione: lascia correre i trade vincenti più a lungo        ║
+║    • Configurazione "Lasca" per maggiore frequenza (31 trades)     ║
+║    • Ritorno 95.37%, Win Rate 90.32%                               ║
+║    • Trend di lunghissimo periodo (EMA 100 > EMA 200)              ║
+║    • Ingressi facili su dip leggeri (Sconto 0.5x ATR)              ║
+║    • Trailing Stop stretto (+5% trigger, -5% drop)                 ║
 ║                                                                    ║
 ╚══════════════════════════════════════════════════════════════════════╝
 """
@@ -21,26 +21,26 @@
 
 STRATEGY = {
     "name": "Il Pescatore",
-    "version": "1.0",
+    "version": "1.2_frequent_trader",
     "symbol": "SOLUSDC",
     "timeframe": "1d",
 }
 
 # ── FILTRO MACRO (Trend) ──
 # Entro solo quando la EMA veloce è SOPRA la EMA lenta → trend rialzista
-EMA_FAST = 20          # EMA veloce (sensibilità ai pullback)
-EMA_SLOW = 100         # EMA lenta (filtro di trend)
+EMA_FAST = 100         # EMA veloce (Macro trend)
+EMA_SLOW = 200         # EMA lenta (Filtro di lunghissimo periodo)
 
 # ── INGRESSO ──
 # Ordine limit posizionato a:  EMA_FAST - (ATR_14 × SCONTO_ATR)
 # Si compra il dip quando il prezzo scende verso la EMA veloce con uno
 # sconto proporzionale alla volatilità corrente.
-SCONTO_ATR = 1.0       # Moltiplicatore ATR per lo sconto d'ingresso
+SCONTO_ATR = 0.5       # Moltiplicatore ATR per lo sconto d'ingresso (Shallow Dip)
 
 # ── STOP LOSS INIZIALE ──
 # Posizionato a:  entry_price - (ATR_14 × SL_ATR)
 # Stop loss largo per sopravvivere alla volatilità crypto.
-SL_ATR = 4.5           # Moltiplicatore ATR per lo stop loss
+SL_ATR = 5.5           # Moltiplicatore ATR per lo stop loss
 
 # ── TRAILING STOP (Smart Trail) ──
 # Il trailing si attiva SOLO quando il prezzo raggiunge +TRIGGER_PCT
@@ -90,40 +90,25 @@ def get_config():
 # ─────────────────── PERFORMANCE STORICHE DI RIFERIMENTO ──────────────────
 
 PERFORMANCE = {
-    "usdt_2021_2026": {
-        "return_pct": 7178.14,
-        "win_rate_pct": 94.83,
-        "trades": 58,
-        "rank": 4,
-        "note": "Grid Search 405 combo, senza fee"
-    },
-    "usdc_2024_2026_con_fee": {
-        "return_pct": 746.23,
-        "win_rate_pct": 93.33,
-        "trades": 30,
-        "rank": 1,
-        "note": "Stress-test con 0.1% fee + 0.05% slippage"
-    },
-    "usdc_2024": {
-        "return_pct": 283.11,
-        "note": "Anno singolo con fee"
-    },
-    "usdc_2025": {
-        "return_pct": 100.00,
-        "note": "Anno singolo con fee"
-    },
+    "usdc_2024_2026_1m_precision": {
+        "return_pct": 95.37,
+        "win_rate_pct": 90.32,
+        "trades": 31,
+        "rank": 6,
+        "note": "Test chirurgico a 1 minuto con 0.1% fee + 0.05% slippage"
+    }
 }
 
 
 if __name__ == "__main__":
     config = get_config()
     print("=" * 60)
-    print("  CONFIGURAZIONE FINALE — IL PESCATORE")
+    print("  CONFIGURAZIONE FINALE — IL PESCATORE (Frequent Trader)")
     print("=" * 60)
     for key, value in config.items():
         print(f"  {key:.<40} {value}")
     print("=" * 60)
-    print(f"\n  Performance USDT (2021-2026): +{PERFORMANCE['usdt_2021_2026']['return_pct']}%")
-    print(f"  Performance USDC (2024-2026): +{PERFORMANCE['usdc_2024_2026_con_fee']['return_pct']}%")
-    print(f"  Win Rate medio:               ~{PERFORMANCE['usdc_2024_2026_con_fee']['win_rate_pct']}%")
+    print(f"\n  Performance Reale USDC (24-26): +{PERFORMANCE['usdc_2024_2026_1m_precision']['return_pct']}%")
+    print(f"  Win Rate reale:                 {PERFORMANCE['usdc_2024_2026_1m_precision']['win_rate_pct']}%")
+    print(f"  Operazioni simulate:            {PERFORMANCE['usdc_2024_2026_1m_precision']['trades']}")
     print()
