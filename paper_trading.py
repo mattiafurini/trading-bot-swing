@@ -44,8 +44,9 @@ def save_state(state):
 
 def get_daily_indicators():
     """Scarica i dati storici e calcola gli indicatori sulla candela giornaliera chiusa."""
-    # Scarichiamo 200 giorni per avere la EMA 100 stabile
-    klines = client.get_historical_klines(SYMBOL, Client.KLINE_INTERVAL_1DAY, "200 days ago UTC")
+    # Scarichiamo 400 giorni per avere la EMA 200 stabile
+    # (EMA_200 necessita di almeno 200 candele per produrre il primo valore non-NaN)
+    klines = client.get_historical_klines(SYMBOL, Client.KLINE_INTERVAL_1DAY, "400 days ago UTC")
     df = pd.DataFrame(klines, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'quote_av', 'trades', 'tb_base_av', 'tb_quote_av', 'ignore'])
     
     df['close'] = pd.to_numeric(df['close'])
